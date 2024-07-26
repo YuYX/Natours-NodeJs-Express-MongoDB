@@ -25,9 +25,9 @@ const bookTour = async tourId => {
     // 1) Get checkout session from API
     const session = await axios({
       method: 'GET',
-      url: `http://127.0.0.1:3000/api/v1/bookings/checkout-session/${tourId}`
+      url: `/api/v1/bookings/checkout-session/${tourId}`
     });
-    console.log(session);
+    // console.log(session);
     // 2) Create Checkout form + charge Credit Card.
     await stripe.redirectToCheckout({
       sessionId: session.data.session.id,
@@ -44,8 +44,8 @@ const updateSettings = async (data, type) => {
   try {
     const url =
       type === 'password'
-        ? 'http://127.0.0.1:3000/api/v1/users/updateMyPassword'
-        : 'http://127.0.0.1:3000/api/v1/users/updateMe';
+        ? '/api/v1/users/updateMyPassword'
+        : '/api/v1/users/updateMe';
     const res = await axios({
       method: 'PATCH',
       url,
@@ -64,7 +64,7 @@ const logout = async () => {
   try {
     const res = await axios({
       method: 'GET',
-      url: 'http://127.0.0.1:3000/api/v1/users/logout'
+      url: '/api/v1/users/logout'
     });
 
     if (res.data.status === 'success') {
@@ -80,7 +80,7 @@ const login = async (email, password) => {
   try {
     const res = await axios({
       method: 'POST',
-      url: 'http://127.0.0.1:3000/api/v1/users/login',
+      url: '/api/v1/users/login',
       data: {
         email,
         password
@@ -122,7 +122,7 @@ if (userDataForm)
     form.append('name', (name = document.getElementById('name').value));
     form.append('email', (name = document.getElementById('email').value));
     form.append('photo', (name = document.getElementById('photo').files[0]));
-    console.log('FORM:', form);
+    // console.log('FORM:', form);
     // const name = document.getElementById('name').value;
     // const email = document.getElementById('email').value;
     // updateSettings({ name, email }, 'data');

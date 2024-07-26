@@ -8,6 +8,8 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 
+const compression = require('compression');
+
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const tourRouter = require('./routes/tourRoutes');
@@ -46,7 +48,7 @@ app.use('/api', limiter); // Only apply to route of api.
 
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({extended: true, limit: '10mb'}));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 
 // Data sanitization against NoSQL query injection
@@ -68,6 +70,8 @@ app.use(
 //   next();
 // });
 
+app.use(compression()); // Compress all the text responses.
+
 // Test middleware
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
@@ -85,11 +89,11 @@ app.use('/api/v1/reviews', reviewRouter);
 app.use('/api/v1/bookings', bookingRouter);
 
 // catch all unhandled HTTP method, GET, POST,...
-app.all('*', (req, res, next) => { 
+app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
-app.use(globalErrorHandler); 
+app.use(globalErrorHandler);
 
 // 4) START SERVER
 module.exports = app;
