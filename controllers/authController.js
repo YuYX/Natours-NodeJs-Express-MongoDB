@@ -13,7 +13,7 @@ const signToken = id => {
   });
 };
 
-const createNSendToken = (user, statusCode, res) => {
+const createNSendToken = (user, statusCode, req, res) => {
   const token = signToken(user._id);
 
   const cookieOptions = {
@@ -21,9 +21,11 @@ const createNSendToken = (user, statusCode, res) => {
       Date.now() + process.env.JWT_COOKIE_EXPIRES_in * 24 * 60 * 60 * 1000
     ),
     // secure: true, // Required HTTPS protocol.
-    httpOnly: true // Make the cookie cannot be accessed and modified by Browser.
+    httpOnly: true, // Make the cookie cannot be accessed and modified by Browser.
+    secure: req.secure || req.headers('x-forwarded-proto') === 'https'
   };
-  if (process.env.NODE_END === 'production') cookieOptions.secure = true;
+  // if (process.env.NODE_END === 'production') cookieOptions.secure = true; 
+
   res.cookie('jwt', token, cookieOptions);
 
   // Remove the password from output.
@@ -51,7 +53,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   //     passwordConfirm: req.body.passwordConfirm,
   // });
 
-  createNSendToken(newUser, 201, res);
+  createNSendToken(newUser, 201, req, res);
   //   const token = signToken(newUser._id);
 
   //   res.status(201).json({
@@ -80,7 +82,7 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   // 3) If everything OK, send token to client
-  createNSendToken(user, 200, res);
+  createNSendToken(user, 200, req, res);
   //   const token = signToken(user._id);
 
   //   res.status(200).json({
@@ -263,7 +265,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   // 3) Update changedPasswordAt property for the user
 
   // 4) Log the user in, send JWT
-  createNSendToken(user, 200, res);
+  createNSendToken(user, 200,req, res);
   //   const token = signToken(user._id);
 
   //   res.status(200).json({
@@ -294,5 +296,5 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   //    the 'passwordChangedAt' ).
 
   // 4) Log user in, send JWT
-  createNSendToken(user, 200, res);
+  createNSendToken(user, 200, req, res);
 });
