@@ -5,6 +5,8 @@ const bookingController = require('../controllers/bookingController');
 
 const router = express.Router();
 
+router.use(viewController.alerts);
+
 // This middleware will be applied to all the middlewares after this point.
 // So we also don't need to place authController.protect in front any middleware
 // which need the authorization for access.
