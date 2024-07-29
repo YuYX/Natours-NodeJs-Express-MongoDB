@@ -20,6 +20,8 @@ const viewRouter = require('./routes/viewRoutes');
 
 const app = express();
 
+// For Heroku deployment, in order to make the following line at authController.js working
+// secure: req.secure || req.headers('x-forwarded-proto') === 'https'
 app.enable('trust proxy');
 
 app.set('view engine', 'pug');

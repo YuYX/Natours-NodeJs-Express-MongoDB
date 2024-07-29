@@ -16,17 +16,24 @@ const signToken = id => {
 const createNSendToken = (user, statusCode, req, res) => {
   const token = signToken(user._id);
 
-  const cookieOptions = {
+  // const cookieOptions = {
+  //   expires: new Date(
+  //     Date.now() + process.env.JWT_COOKIE_EXPIRES_in * 24 * 60 * 60 * 1000
+  //   ),
+  //   // secure: true, // Required HTTPS protocol.
+  //   httpOnly: true, // Make the cookie cannot be accessed and modified by Browser.
+  //   secure: req.secure || req.headers('x-forwarded-proto') === 'https'
+  // };
+  // if (process.env.NODE_END === 'production') cookieOptions.secure = true;
+
+  res.cookie('jwt', token, {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_in * 24 * 60 * 60 * 1000
     ),
     // secure: true, // Required HTTPS protocol.
     httpOnly: true, // Make the cookie cannot be accessed and modified by Browser.
     secure: req.secure || req.headers('x-forwarded-proto') === 'https'
-  };
-  // if (process.env.NODE_END === 'production') cookieOptions.secure = true; 
-
-  res.cookie('jwt', token, cookieOptions);
+  });
 
   // Remove the password from output.
   user.password = undefined;
@@ -265,7 +272,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   // 3) Update changedPasswordAt property for the user
 
   // 4) Log the user in, send JWT
-  createNSendToken(user, 200,req, res);
+  createNSendToken(user, 200, req, res);
   //   const token = signToken(user._id);
 
   //   res.status(200).json({
