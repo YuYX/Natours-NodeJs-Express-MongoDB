@@ -17,6 +17,7 @@ const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
+const bookingController = require('./controllers/bookingController');
 const viewRouter = require('./routes/viewRoutes');
 
 const app = express();
@@ -40,7 +41,6 @@ app.use(cors());
 app.options('*', cors());
 // app.options('/api/v1/tours/:id', cors());
 
-
 // Serving static files
 // app.use(express.static(`${__dirname}/public`));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -60,6 +60,12 @@ const limiter = rateLimit({
   message: 'Too many requests from this IP, please try again in an hour1'
 });
 app.use('/api', limiter); // Only apply to route of api.
+
+app.post(
+  '/webhook-checkout',
+  express.raw({ type: 'application/json' }),  // No need to use old method: bodyParser which required to install 'body-parser' package.
+  bookingController.webhookCheckout
+);
 
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10mb' }));
