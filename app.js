@@ -62,12 +62,12 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter); // Only apply to route of api.
 
-// app.post(
-//   '/webhook-checkout',
-//   // express.raw({ type: 'application/json' }),  // No need to use old method: bodyParser which required to install 'body-parser' package.
-//   bodyParser.raw({ type: 'application/json' }),
-//   bookingController.webhookCheckout
-// );
+app.post(
+  '/webhook-checkout',
+  // express.raw({ type: 'application/json' }),  // No need to use old method: bodyParser which required to install 'body-parser' package.
+  bodyParser.raw({ type: 'application/json' }),
+  bookingController.webhookCheckout
+);
 
 
 // Body parser, reading data from body into req.body
