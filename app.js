@@ -30,6 +30,8 @@ app.enable('trust proxy');
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
+console.log(app.name, 'Is running...');
+
 // 1) GLOBAL MIDDLEWARES
 //Implement CORS
 app.use(cors());
