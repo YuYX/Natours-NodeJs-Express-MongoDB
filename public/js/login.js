@@ -33,7 +33,7 @@ const bookTour = async tourId => {
     await stripe.redirectToCheckout({
       sessionId: session.data.session.id,
     }) 
-    console.log('bookTour redirected to Checkout.');
+    showAlert('success', `Redirect to Checkout: ${session.data.session.id}`);
   } catch (err) {
     console.log(err);
     showAlert('error', err);
@@ -153,10 +153,8 @@ if (userPasswordForm)
 if (bookBtn)
   bookBtn.addEventListener('click', e => {
     e.target.textContent = 'Processing...';
-    const { tourId } = e.target.dataset; //const tourId = e.target.dataset.tourId;
-    console.log("bookTour calling.");
-    bookTour(tourId);
-    console.log("bookTour ended.");
+    const { tourId } = e.target.dataset; //const tourId = e.target.dataset.tourId; 
+    bookTour(tourId); 
   });
 
   const alertMessage = document.querySelector('body').dataset.alert;
