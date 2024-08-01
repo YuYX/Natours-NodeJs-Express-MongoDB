@@ -22,7 +22,7 @@ const showAlert = (type, msg, time = 5) => {
 
 const bookTour = async tourId => {  
   try {
-    console.log('bookTour started.');
+    showAlert('success', tourId);
     // 1) Get checkout session from API
     const session = await axios({
       method: 'GET',
@@ -32,8 +32,7 @@ const bookTour = async tourId => {
     // 2) Create Checkout form + charge Credit Card.
     await stripe.redirectToCheckout({
       sessionId: session.data.session.id,
-    }) 
-    showAlert('success', `Redirect to Checkout: ${session.data.session.id}`);
+    })  
   } catch (err) {
     console.log(err);
     showAlert('error', err);
