@@ -27,7 +27,7 @@ const bookTour = async tourId => {
       method: 'GET',
       url: `/api/v1/bookings/checkout-session/${tourId}`
     });
-    // console.log(session);
+    console.log('SESSION:',session);
     // 2) Create Checkout form + charge Credit Card.
     await stripe.redirectToCheckout({
       sessionId: session.data.session.id,
