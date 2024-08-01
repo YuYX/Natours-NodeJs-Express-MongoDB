@@ -31,8 +31,7 @@ const bookTour = async tourId => {
     // 2) Create Checkout form + charge Credit Card.
     await stripe.redirectToCheckout({
       sessionId: session.data.session.id,
-    }); 
-    showAlert('success', session.data.session.id);  
+    });  
   } catch (err) {
     console.log(err);
     showAlert('error', err);
