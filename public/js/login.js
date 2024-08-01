@@ -20,19 +20,20 @@ const showAlert = (type, msg, time = 5) => {
   window.setTimeout(hideAlert, time * 1000);
 };
 
-const bookTour = async tourId => { 
+const bookTour = async tourId => {  
   try {
+    console.log('bookTour started.');
     // 1) Get checkout session from API
     const session = await axios({
       method: 'GET',
       url: `/api/v1/bookings/checkout-session/${tourId}`
     });
-    console.log('SESSION:',session);
+    
     // 2) Create Checkout form + charge Credit Card.
     await stripe.redirectToCheckout({
       sessionId: session.data.session.id,
-    })
-
+    }) 
+    console.log('bookTour redirected to Checkout.');
   } catch (err) {
     console.log(err);
     showAlert('error', err);
@@ -153,7 +154,9 @@ if (bookBtn)
   bookBtn.addEventListener('click', e => {
     e.target.textContent = 'Processing...';
     const { tourId } = e.target.dataset; //const tourId = e.target.dataset.tourId;
+    console.log("bookTour calling.");
     bookTour(tourId);
+    console.log("bookTour ended.");
   });
 
   const alertMessage = document.querySelector('body').dataset.alert;
