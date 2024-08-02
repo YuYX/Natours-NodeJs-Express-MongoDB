@@ -21,7 +21,7 @@ const bookingRouter = require('./routes/bookingRoutes');
 const bookingController = require('./controllers/bookingController');
 const viewRouter = require('./routes/viewRoutes');
 
-const app = express();
+const app = express(); 
 
 // For Heroku deployment, in order to make the following line at authController.js working
 // secure: req.secure || req.headers('x-forwarded-proto') === 'https'
@@ -31,6 +31,7 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views')); 
 
 // 1) GLOBAL MIDDLEWARES
+
 //Implement CORS
 app.use(cors());
 // Access-Control-Allow-Origin
@@ -62,6 +63,7 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter); // Only apply to route of api.
 
+// Implementing Webhooks of Stripe Payment's Checkout  
 app.post(
   '/webhook-checkout',
   // express.raw({ type: 'application/json' }),  // No need to use old method: bodyParser which required to install 'body-parser' package.
