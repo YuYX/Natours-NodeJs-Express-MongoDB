@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
-const validator = require('validator');
+// const validator = require('validator');
 // const User = require('./userModel');
 
 const dotenv = require('dotenv');
-const { getTourStats } = require('../controllers/tourController');
+// const { getTourStats } = require('../controllers/tourController'); 
+
 dotenv.config({ path: './config.env' });
 
 const tourSchema = new mongoose.Schema(

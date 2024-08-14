@@ -16,7 +16,7 @@ router.use(viewController.alerts);
 // 2 -> '/' -> Without query -> bypass bookingController.createBookingCheckout ->authController.isLoggedIn
 router.get(
   '/',
-  // bookingController.createBookingCheckout,
+  bookingController.createBookingCheckout,
   authController.isLoggedIn,
   viewController.getOverview
 );
